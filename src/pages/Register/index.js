@@ -1,12 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { AppContext } from '../../App';
+import { postApi } from '../../services';
+import Loading from '../../components/Loading';
+import Toast from '../../components/Toast';
 import { Container, ContainerForm, ContainerInfo, ContainerTitleForm, TitleForm, LineDecoration, Input, Button, TitleInfo, TextInfo } from './styles';
 
 const Register = () => {
 
+  const appData = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
-  const [file, setFile] = useState(null);
   const [fileName, setFilename] = useState('');
   const inputFile = useRef(null);
+
+  const submitUser = async () => {
+    if (!loading) {
+      setLoading(true);
+      if (!name) {
+        setLoading(false);
+        return Toast('Necessário preencher o Nome', 'error');
+      }
+      const formData = new FormData();
+      formData.append('name', name);
+      if (inputFile.current.files && inputFile.current.files[0]) formData.append('file', inputFile.current.files[0]);
+      const { success, log, message, user } = await postApi('/users', formData);
+      setLoading(false);
+      Toast(message || log || 'Ocorreu um erro ao criar usuário', success ? 'success' : 'error');
+      if (success) {
+        localStorage.setItem('threechatUser', JSON.stringify(user));
+        appData.setAuthUser({ authenticated: true, ...user });
+      }
+    }
+  }
 
   return (
     <Container>
@@ -32,7 +57,10 @@ const Register = () => {
           style={{ display: 'none' }}
           onChange={() => setFilename(inputFile.current.files[0].name)}
         />
-        <Button>Cadastrar</Button>
+        <Button onClick={submitUser}>
+          {(loading) && <Loading width='25px' />}
+          {(!loading) && 'Cadastrar'}
+        </Button>
       </ContainerForm>
       <ContainerInfo>
         <TitleInfo>Bem vindo ao</TitleInfo>

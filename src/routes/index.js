@@ -9,7 +9,7 @@ const Routes = ({ authUser }) => {
     <Router>
       <Switch>
         <Route exact path='/' render={() => authUser.authenticated ? <Redirect to='/chat' /> : <Redirect to='/register' />} />
-        <Route exact path='/register' render={() => authUser.authenticated ? <Redirect to='/main' /> : <Register />} />
+        <Route exact path='/register' render={() => authUser.authenticated ? <Redirect to='/chat' /> : <Register />} />
         <PrivateRoute path='/chat' component={Chat} authUser={authUser} />
       </Switch>
     </Router>
