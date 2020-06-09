@@ -37,6 +37,7 @@ export const TitleApp = styled.p`
   font-size: 24px;
   color: #FFF;
   margin-bottom: 30px;
+  cursor: pointer;
 `;
 
 export const ContainerTitleUsers = styled.div`

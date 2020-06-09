@@ -1,12 +1,15 @@
 import React from 'react';
 import userIcon from '../../assets/user.png';
-import { Container, Perfil, Name } from './styles';
+import { Container, Profile, Name, NotReadCount } from './styles';
 
-const ItemUserList = ({ user }) => {
+const ItemUserList = ({ user, messagesNotRead = 2 }) => {
   return (
     <Container>
-      <Perfil src={user.photo || userIcon} />
+      <Profile src={user.photo || userIcon} />
       <Name>{user.name}</Name>
+      {
+        (messagesNotRead) && <NotReadCount>{messagesNotRead}</NotReadCount>
+      }
     </Container>
   )
 }
