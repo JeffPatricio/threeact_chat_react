@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, Fragment } from 'react';
 import socketIOClient from "socket.io-client";
-import ItemUserList from "../../components/ItemUserList";
-import generalIcon from "../../assets/general.png";
-import {
-  Container,
-  ContainerChat,
-  ContainerUsers,
-  TitleApp,
-  ContainerTitleUsers,
-  LineDecoration,
-  TitleUsers,
-  ListUsers,
-} from "./styles";
+import { LoadingPage } from '../../components/Loading';
+import ItemUserList from '../../components/ItemUserList';
+import generalIcon from '../../assets/general.png';
+import { Container, ContainerChat, ContainerUsers, TitleApp, ContainerTitleUsers, LineDecoration, TitleUsers, ListUsers } from './styles';
 
 const socket = socketIOClient("http://localhost:3001", {
   transport: ["websocket"],
 });
 
 const Chat = () => {
+  
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [listUsers, setListUsers] = useState([]);
 
   useEffect(() => {
+    socket.on('listUsers', data => setListUsers(data));
     socket.on("sendMessage", (message) => {
       setMessages([...message, message]);
     });
+    setLoading(false);
   }, []);
 
   const sendMessage = () => {
@@ -35,25 +33,30 @@ const Chat = () => {
   };
 
   return (
-    <Container>
-      <ContainerUsers>
-        <TitleApp>Threechat</TitleApp>
-        <ItemUserList user={{ name: "Geral", photo: generalIcon }} />
-        <ContainerTitleUsers>
-          <TitleUsers>Usuários</TitleUsers>
-          <LineDecoration />
-        </ContainerTitleUsers>
-        <ListUsers>
-          <ItemUserList user={{ name: "Geral" }} />
-          <ItemUserList user={{ name: "Geral" }} />
-          <ItemUserList user={{ name: "Geral" }} />
-          <ItemUserList user={{ name: "Geral" }} />
-          <ItemUserList user={{ name: "Geral" }} />
-          <ItemUserList user={{ name: "Geral" }} />
-        </ListUsers>
-      </ContainerUsers>
-      <ContainerChat>
-        <textarea
+    <Fragment>
+      {
+        (loading) && <LoadingPage />
+      }
+      {
+        (!loading) &&
+        <Container>
+          <ContainerUsers>
+            <TitleApp>Threechat</TitleApp>
+            <ItemUserList user={{ name: 'Geral', photo: generalIcon }} />
+            <ContainerTitleUsers>
+              <TitleUsers>Usuários</TitleUsers>
+              <LineDecoration />
+            </ContainerTitleUsers>
+            <ListUsers>
+              {
+                listUsers.map((user, index) => (
+                  <ItemUserList key={index} user={user} />
+                ))
+              }
+            </ListUsers>
+          </ContainerUsers>
+          <ContainerChat>
+              <textarea
           rows="50"
           cols="50"
           value={messages}
@@ -71,9 +74,11 @@ const Chat = () => {
         <button type="button" onClick={() => sendMessage()}>
           Enviar
         </button>
-      </ContainerChat>
-    </Container>
-  );
-};
+          </ContainerChat>
+        </Container>
+      }
+    </Fragment>
+  )
+}
 
 export default Chat;

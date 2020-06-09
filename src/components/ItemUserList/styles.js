@@ -15,17 +15,32 @@ export const Container = styled.div`
   }
 `;
 
-export const Perfil = styled.div`
+export const Profile = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background: #EEE;
+  background: #7E57C2;
   background-image: url(${props => props.src});
   background-size: cover;
 `;
 
 export const Name = styled.p`
+  display: flex;
   font-size: 18px;
   color: #333;
   margin-left: 15px;
+  flex: 1;
+`;
+
+export const NotReadCount = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #8effc3;
+  font-size: 14px;
+  color: #333;
+  align-self: flex-end;
 `;
