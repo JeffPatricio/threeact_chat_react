@@ -4,12 +4,15 @@ export const Container = styled.div`
   display: flex;
   align-self: stretch;
   align-items: center;
-  background: #FFF;
+  background: ${props => props.active ? '#DDD' : '#FFF'};
   border: 0;
   border-radius: 15px;
+  border-top-right-radius:  ${props => props.active ? '0px' : '15px'};
+  border-bottom-right-radius:  ${props => props.active ? '0px' : '15px'};
   padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
+  margin-right: ${props => props.active ? '0px' : '10px'};
   &:hover{
     background: #EEE;
   }

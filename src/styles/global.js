@@ -18,6 +18,9 @@ const GlobalStyle = createGlobalStyle`
   ::placeholder {
     color: rgba(255,255,255,0.6);
   }
+  .textarea-placeholder-custom::placeholder {
+    color: #333;
+  }
   .items-menu::-webkit-scrollbar {
     display: none;
   }
@@ -37,8 +40,21 @@ const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
-  ::-webkit-scrollbar {
+  .list-users-custom::-webkit-scrollbar {
     display: none;
+  }
+  
+  .textarea-placeholder-custom::-webkit-scrollbar {
+    width: 5px !important;
+  }
+  .textarea-placeholder-custom::-webkit-scrollbar-track {
+    background: #f1f1f1 !important; 
+  }
+  .textarea-placeholder-custom::-webkit-scrollbar-thumb {
+    background: #888 !important; 
+  }
+  .textarea-placeholder-custom::-webkit-scrollbar-thumb:hover {
+    background: #555 !important; 
   }
 `;
 

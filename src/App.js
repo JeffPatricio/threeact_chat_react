@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      const dataStorage = await localStorage.getItem('threechatUser');
+      const dataStorage = await JSON.parse(localStorage.getItem('threechatUser'));
       if (dataStorage) setAuthUser({ authenticated: true, ...dataStorage });
       setLoading(false);
     })()

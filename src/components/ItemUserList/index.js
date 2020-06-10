@@ -2,13 +2,13 @@ import React from 'react';
 import userIcon from '../../assets/user.png';
 import { Container, Profile, Name, NotReadCount } from './styles';
 
-const ItemUserList = ({ user, messagesNotRead = 2 }) => {
+const ItemUserList = ({ user, messagesNotRead = 2, active, onClick }) => {
   return (
-    <Container>
+    <Container active={active} onClick={onClick}>
       <Profile src={user.photo || userIcon} />
       <Name>{user.name}</Name>
       {
-        (messagesNotRead) && <NotReadCount>{messagesNotRead}</NotReadCount>
+        (messagesNotRead && !active) && <NotReadCount>{messagesNotRead}</NotReadCount>
       }
     </Container>
   )
