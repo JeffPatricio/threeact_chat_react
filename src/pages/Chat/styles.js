@@ -50,7 +50,7 @@ export const TitleApp = styled.p`
   align-self: center;
   font-size: 24px;
   color: #FFF;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   cursor: pointer;
 `;
 
@@ -95,8 +95,9 @@ export const ListMessages = styled.div`
   overflow: auto;
 `;
 
-export const Message = styled.p`
+export const Message = styled.div`
   display: flex;
+  flex-direction: column;
   max-width: 70%;
   padding: 15px;
   border-radius: 30px;
@@ -105,6 +106,22 @@ export const Message = styled.p`
   color: ${props => props.isMy ? '#FFF' : '#333'};
   align-self: ${props => props.isMy ? 'flex-end' : 'flex-start'};
   font-size: 16px;
+`;
+
+export const NameMessage = styled.p`
+  display: flex;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+export const TimeMessage = styled.p`
+  display: flex;
+  color: ${props => props.isMy ? '#FFF' : '#333'};
+  font-size: 10px;
+  margin-top: 10px;
+  align-self: flex-end;
 `;
 
 export const ContainerFooter = styled.div`
@@ -151,6 +168,27 @@ export const NameHeader = styled.p`
   padding: 0px 20px;
   position: absolute;
   align-self: center;
+`;
+
+export const MyProfile = styled.div`
+  display: flex;
+  align-self: center;
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  border-radius: 20px;
+  background: #7E57C2;
+  background-image: url(${props => props.src});
+  background-size: cover;
+`;
+
+export const MyName = styled.p`
+  align-self: center;
+  display: flex;
+  font-size: 16px;
+  color: #FFF;
+  margin-bottom: 30px;
 `;
 
 export const TextAreaStyles = {

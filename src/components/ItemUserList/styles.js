@@ -14,11 +14,14 @@ export const Container = styled.div`
   cursor: pointer;
   margin-right: ${props => props.active ? '0px' : '10px'};
   &:hover{
-    background: #EEE;
+    background: #DDD;
   }
 `;
 
 export const Profile = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -39,11 +42,20 @@ export const NotReadCount = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 10px;
-  background: #8effc3;
-  font-size: 14px;
+  background: #F3B132;
+  font-size: 10px;
+  font-weight: bold;
   color: #333;
   align-self: flex-end;
+`;
+
+export const Online = styled.div`
+  width: 15px;
+  height: 15px;
+  border-radius: 8px;
+  background: #8effc3;
+  border: 1px solid #333;
 `;
