@@ -24,6 +24,8 @@ const Chat = () => {
   const [idChat, setIdChat] = useState(0);
   const [messages, setMessages] = useState([]);
   const [listUsers, setListUsers] = useState([]);
+  const [countNotRead, setCountNotRead] = useState({});
+  const sessionActive = idChat === 0 ? 0 : appData.authUser.id < idChat ? `${appData.authUser.id}${idChat})` : `${idChat}${appData.authUser.id}`;
 
   useEffect(() => {
     (async () => {
@@ -56,10 +58,10 @@ const Chat = () => {
       if (socket) {
         socket.off('newMessage');
         socket.on('newMessage', (message) => {
-          console.log(message)
-          if (idChat === 0) {
-            setMessages([...messages, message]);
-          }
+          console.log('new Messgae')
+          const { id_receiver, id_sender } = message;
+          const sessionMessage = id_receiver === 0 ? 0 : id_receiver < id_sender ? parseInt(`${id_receiver}${id_sender}`) : parseInt(`${id_sender}${id_receiver}`);
+          if (sessionMessage === sessionActive) return setMessages([...messages, message]);
         });
       }
     })()
@@ -68,7 +70,7 @@ const Chat = () => {
   useEffect(() => {
     (async () => {
       const userId = appData.authUser.id;
-      const session = idChat === 0 ? 0 : userId < idChat ? `${userId}${idChat})` : `${idChat}${userId}`;
+      const session = idChat === 0 ? 0 : userId < idChat ? `${userId}${idChat}` : `${idChat}${userId}`;
       const { messages } = await getApi(`/messages/${session}`);
       setMessages(messages);
     })()
