@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import socketIOClient from 'socket.io-client';
 import TextareaAutosize from 'react-textarea-autosize';
 import { getApi } from '../../services';
@@ -25,11 +25,11 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [listUsers, setListUsers] = useState([]);
   const [countNotRead, setCountNotRead] = useState({});
-  const sessionActive = idChat === 0 ? 0 : appData.authUser.id < idChat ? `${appData.authUser.id}${idChat})` : `${idChat}${appData.authUser.id}`;
+  const sessionActive = idChat === 0 ? 0 : appData.authUser.id < idChat ? `${appData.authUser.id}${idChat}` : `${idChat}${appData.authUser.id}`;
 
   useEffect(() => {
     (async () => {
-      const socketConnection = socketIOClient(`http://localhost:3001?id_user=${appData.authUser.id}`, { transport: ['websocket'], });
+      const socketConnection = socketIOClient(`http://localhost:3001?id_user=${appData.authUser.id}`, { transport: ['websocket'] });
       socketConnection.on('listUsers', data => setListUsers(data));
       setSocket(socketConnection);
     })()
@@ -39,14 +39,16 @@ const Chat = () => {
     (async () => {
       if (socket) {
         socket.off('logonUser');
-        socket.off('logoffUser');
-        socket.on('logonUser', (user) => {
-          const usersOn = listUsers.filter(userList => `${userList.id}` !== `${user.id}`);
-          setListUsers([...usersOn, user]);
+        socket.on('logonUser', (idUser) => {
+          const userOnline = listUsers.filter(userList => `${userList.id}` === `${idUser}`)[0];
+          const restUsers = listUsers.filter(userList => `${userList.id}` !== `${idUser}`);
+          setListUsers([...restUsers, { ...userOnline, online: 1 }]);
         });
-        socket.on('logoffUser', (user) => {
-          const usersOn = listUsers.filter(userList => `${userList.id}` !== `${user.id}`);
-          setListUsers([...usersOn, user]);
+        socket.off('logoffUser');
+        socket.on('logoffUser', (idUser) => {
+          const userOffline = listUsers.filter(userList => `${userList.id}` === `${idUser}`)[0];
+          const restUsers = listUsers.filter(userList => `${userList.id}` !== `${idUser}`);
+          setListUsers([...restUsers, { ...userOffline, online: 0 }]);
         });
       }
     })()
@@ -58,14 +60,23 @@ const Chat = () => {
       if (socket) {
         socket.off('newMessage');
         socket.on('newMessage', (message) => {
-          console.log('new Messgae')
           const { id_receiver, id_sender } = message;
-          const sessionMessage = id_receiver === 0 ? 0 : id_receiver < id_sender ? parseInt(`${id_receiver}${id_sender}`) : parseInt(`${id_sender}${id_receiver}`);
-          if (sessionMessage === sessionActive) return setMessages([...messages, message]);
+          const sessionMessage = id_receiver === 0 ? 0 : id_receiver < id_sender ? `${id_receiver}${id_sender}` : `${id_sender}${id_receiver}`;
+          if (sessionMessage === sessionActive) {
+            socket.emit('readMessages', { id_sender: idChat });
+            return setMessages([...messages, message]);
+          }
+          if (sessionMessage !== 0 && id_sender != appData.authUser.id) {
+            const userActive = listUsers.filter(userList => `${userList.id}` === `${id_sender}`)[0];
+            const restUsers = listUsers.filter(userList => `${userList.id}` !== `${id_sender}`);
+            console.log(userActive)
+            console.log(restUsers)
+            setListUsers([...restUsers, { ...userActive, notReadCount: userActive.notReadCount + 1 }]);
+          }
         });
       }
     })()
-  }, [messages]);
+  }, [messages, listUsers]);
 
   useEffect(() => {
     (async () => {
@@ -73,6 +84,12 @@ const Chat = () => {
       const session = idChat === 0 ? 0 : userId < idChat ? `${userId}${idChat}` : `${idChat}${userId}`;
       const { messages } = await getApi(`/messages/${session}`);
       setMessages(messages);
+      if (socket && idChat !== 0) {
+        socket.emit('readMessages', { id_sender: idChat });
+        const userActive = listUsers.filter(userList => `${userList.id}` === `${idChat}`)[0];
+        const restUsers = listUsers.filter(userList => `${userList.id}` !== `${idChat}`);
+        setListUsers([...restUsers, { ...userActive, notReadCount: 0 }]);
+      }
     })()
   }, [idChat]);
 
@@ -114,8 +131,8 @@ const Chat = () => {
               />
             ))
           }
+          <TitleApp>Threechat</TitleApp>
         </ListUsers>
-        <TitleApp>Threechat</TitleApp>
       </ContainerUsers>
       {
         (idChat === undefined) && <ContainerInfo />
@@ -135,7 +152,7 @@ const Chat = () => {
                 return (
                   <Message key={index} isMy={isMy}>
                     {
-                      (!isMy) &&
+                      (!isMy && sessionActive === 0) &&
                       <NameMessage>{message.name}</NameMessage>
                     }
                     {message.text}
