@@ -1,4 +1,6 @@
 import React, { useState, useRef, useContext } from 'react';
+import { Icon } from '@iconify/react';
+import outlineChat from '@iconify/icons-ic/outline-chat';
 import { AppContext } from '../../App';
 import { postApi } from '../../services';
 import Loading from '../../components/Loading';
@@ -64,7 +66,10 @@ const Register = () => {
       </ContainerForm>
       <ContainerInfo>
         <TitleInfo>Bem vindo ao</TitleInfo>
-        <TitleInfo style={{ fontSize: '45px' }}>Threechat</TitleInfo>
+        <TitleInfo style={{ display: 'flex', fontSize: '45px', alignItems: 'center' }}>
+          <Icon icon={outlineChat} color='#7E57C2' size={40} style={{ marginRight: 5, marginTop: 5 }} />
+          Threechat
+          </TitleInfo>
         <LineDecoration style={{ borderTop: '1.5px solid #7E57C2', width: '350px' }} />
         <TextInfo>
           Esse chat é referente ao Projeto Final da N2 de Sistemas Distribuídos desenvolvido pela turma do 6º Período do curso de Sistemas de Informação da Faculdade FASAM.

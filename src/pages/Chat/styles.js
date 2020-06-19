@@ -15,7 +15,7 @@ export const ContainerUsers = styled.div`
   min-width: 360px;
   background: #7E57C2;
   flex-direction: column;
-  padding: 20px 0px 0px 10px;
+  padding: 10px 0px 0px 10px;
 `;
 
 export const ContainerInfo = styled.div`
@@ -45,12 +45,21 @@ export const ContainerChat = styled.div`
   padding: 40px 0px 30px 0px;
 `;
 
+export const ContainerLoading = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const TitleApp = styled.p`
   display: flex;
-  align-self: center;
-  font-size: 24px;
+  align-items: center;
+  align-self: flex-start;
+  font-size: 20px;
   color: #FFF;
   margin-bottom: 20px;
+  margin-left: 10px;
   cursor: pointer;
 `;
 
@@ -100,7 +109,10 @@ export const Message = styled.div`
   flex-direction: column;
   max-width: 70%;
   padding: 15px;
-  border-radius: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: ${props => props.isMy ? '30px' : '0px'};
+  border-bottom-right-radius:${props => props.isMy ? '0px' : '30px'};
   margin: 10px 0px;
   background: ${props => props.isMy ? '#7E57C2' : '#FFF'};
   color: ${props => props.isMy ? '#FFF' : '#333'};

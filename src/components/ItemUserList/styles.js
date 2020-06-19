@@ -42,11 +42,11 @@ export const NotReadCount = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 13px;
   background: #F3B132;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   color: #333;
   align-self: flex-end;

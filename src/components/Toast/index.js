@@ -11,7 +11,7 @@ const ComponentToast = ({ type = 'info', text = '', div }) => {
   }, 2800);
 
   const colors = {
-    'error': () => '#f44336',
+    'error': () => '#b2443c',
     'info': () => '#2196f3',
     'warn': () => '#fdd835',
     'success': () => '#4caf50',
