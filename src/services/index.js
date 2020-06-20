@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const serviceApi = axios.create({
-  baseURL: 'http://localhost:3001'
+  baseURL: 'https://api-threechat.herokuapp.com'
 });
 
 export const getApi = (endpoint) => {

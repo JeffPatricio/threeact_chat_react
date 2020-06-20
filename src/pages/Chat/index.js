@@ -33,7 +33,7 @@ const Chat = () => {
 
   useEffect(() => {
     (async () => {
-      const socketConnection = socketIOClient(`http://localhost:3001?id_user=${appData.authUser.id}`, { transport: ['websocket'] });
+      const socketConnection = socketIOClient(`https://api-threechat.herokuapp.com/?id_user=${appData.authUser.id}`, { transport: ['websocket'] });
       socketConnection.on('listUsers', data => setListUsers(data));
       setSocket(socketConnection);
     })()
