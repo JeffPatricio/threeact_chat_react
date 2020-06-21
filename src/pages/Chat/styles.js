@@ -213,3 +213,17 @@ export const TextAreaStyles = {
   padding: '0px 10px',
   fontSize: '16px'
 }
+
+export const About = styled.div`
+  color: #FFF;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+`;

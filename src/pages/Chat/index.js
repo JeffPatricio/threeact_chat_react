@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import { Link } from "react-router-dom";
 import socketIOClient from 'socket.io-client';
 import { Icon } from '@iconify/react';
 import outlineChat from '@iconify/icons-ic/outline-chat';
@@ -10,9 +11,10 @@ import ItemUserList from '../../components/ItemUserList';
 import generalIcon from '../../assets/general.png';
 import buttonIcon from '../../assets/button.png';
 import userIcon from '../../assets/user.png';
+import questionCircle from '@iconify/icons-la/question-circle';
 import {
   Container, ContainerChat, ContainerUsers, TitleApp, ContainerTitleUsers, LineDecoration, TitleUsers, ListUsers, HeaderChat, LineHeader, NameHeader,
-  ListMessages, FooterChat, TextAreaStyles, ButtonSend, Message, ContainerFooter, ContainerInfo, MyName, MyProfile, NameMessage, TimeMessage, ContainerLoading
+  ListMessages, FooterChat, TextAreaStyles, ButtonSend, Message, ContainerFooter, ContainerInfo, MyName, MyProfile, NameMessage, TimeMessage, ContainerLoading, About
 } from './styles';
 
 const Chat = () => {
@@ -156,6 +158,11 @@ const Chat = () => {
             ))
           }
         </ListUsers>
+        <Link to={`/about`}>
+          <About>
+            <Icon icon={questionCircle} style={{width: '30px', height: '30px'}}/>
+          </About>
+        </Link>
       </ContainerUsers>
       {
         (idChat === undefined) && <ContainerInfo />
